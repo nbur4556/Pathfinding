@@ -1,0 +1,26 @@
+<!DOCTYPE HTML>
+<html lang="en">
+	<head>
+		<title>Pathfinding</title>
+		<link rel="stylesheet" href="stylesheets/main.css" />
+	</head>
+	
+	<body>
+		<input type="number" name="grid-x" id="grid-x" placeholder="x" min="0" />
+		<input type="number" name="grid-y" id="grid-y" placeholder="y" min="0" />
+		<button id="btn-generate">Generate Grid</button>
+		
+		<!-- Set Node Types -->
+		<button id="btn-set-start-node">Start Node</button>
+		<button id="btn-set-end-node">End Node</button>
+		<button id="btn-set-wall-node">Wall Node</button>
+		<button id="btn-set-pending-node">Pending Node</button>
+		
+		<button id="btn-find-path">FindPath</button>
+		
+		<section id="grid-display"></section>
+		
+		<script type="text/javascript" src="scripts/astar-pathfinding.js"></script>
+		<script type="text/javascript" src="scripts/ui.js"></script>
+	</body>
+</html>

@@ -1,0 +1,24 @@
+#grid-display{	
+	margin: 10px;
+	padding: 0;
+}
+
+.node-cell{
+		display: inline-block;
+		margin: 0;
+		padding: 10px;
+		
+		border: 1px solid black;
+}
+
+.start-node-cell{
+	background-color: green;
+}
+
+.end-node-cell{
+	background-color: yellow;
+}
+
+.wall-node-cell{
+	background-color: grey;
+}
