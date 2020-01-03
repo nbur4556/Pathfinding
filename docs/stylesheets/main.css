@@ -12,7 +12,9 @@
 		height: 40px;
 		
 		border: 1px solid black;
+		
 		font-size: xx-small;
+		color: white;
 }
 
 .start-node-cell{

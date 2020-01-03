@@ -7,7 +7,12 @@ class Node{
 	
 	//Distance on path so far
 	SetGCost(gCost){
-		this.gCost = gCost;
+		if(this.parentNode.gCost != undefined){
+			this.gCost = gCost + this.parentNode.gCost;
+		}
+		else{
+			this.gCost = gCost;
+		}
 	}
 	
 	//Shortest distance to end node without obstacles
@@ -26,6 +31,10 @@ class Node{
 	
 	SetParentNode(parentNode){
 		this.parentNode = parentNode;
+	}
+	
+	GetParentNode(){
+		return this.parentNode;
 	}
 	
 	GetCostToTarget(target){
@@ -56,6 +65,9 @@ class Node{
 				let yCoord = (this.yPos - 1) + y;
 				
 				if(xCoord == this.xPos && yCoord == this.yPos){
+					continue;
+				}
+				if(grid[xCoord][yCoord].type == "start-node-cell" || grid[xCoord][yCoord].type == "end-node-cell"){
 					continue;
 				}
 				

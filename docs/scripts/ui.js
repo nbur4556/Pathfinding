@@ -1,7 +1,7 @@
 var nodeGrid;
 var nodeTypeClassName = ""
 
-var isDisplayFCost = false;
+var isDisplayFCost = true;
 
 window.onload = function(){	
 	let gridWidth = document.getElementById("grid-x");
@@ -56,6 +56,24 @@ function DisplayGrid(grid){
 	return grid;
 }
 
+function FindPath(grid){
+	var startNode = nodeGrid.FindNodeTypeInGrid("start-node-cell");
+	var endNode = nodeGrid.FindNodeTypeInGrid("end-node-cell");
+	var nextNode = startNode;
+	var pendingNodes = new Array();
+	
+	if(startNode == undefined || endNode == undefined){
+		console.log("Could not find start and end node");
+		return;
+	}
+	
+	for(let i = 0; i < 10; i++){
+		pendingNodes = SetNeighbors(nextNode);
+		nextNode = GetSmallestFCost(pendingNodes);
+		console.log(nextNode);
+	}
+}
+
 function SetNodeType(node){
 	node.cell.classList = "node-cell";
 	
@@ -65,31 +83,9 @@ function SetNodeType(node){
 	SetCosts(node);
 }
 
-function FindPath(grid){
-	var startNode = nodeGrid.FindNodeTypeInGrid("start-node-cell");
-	var endNode = nodeGrid.FindNodeTypeInGrid("end-node-cell");
-	
-	if(startNode == undefined || endNode == undefined){
-		console.log("Could not find start and end node");
-		return;
-	}
-	
-	var pendingNodes = SetNeighbors(startNode);
-}
-
-function SetNeighbors(node){
-	var neighborNodes = node.FindNeighborNodes(nodeGrid.grid);
-	for(let i = 0; i < pendingNodes.length; i++){
-		nodeTypeClassName = "pending-node-cell";
-		SetNodeType(pendingNodes[i]);
-	}
-	
-	return neighborNodes;
-}
-
 function SetCosts(node){
 	var endNode = nodeGrid.FindNodeTypeInGrid("end-node-cell");
-	var parentNode = nodeGrid.FindNodeTypeInGrid("start-node-cell");
+	var parentNode = node.GetParentNode();
 	
 	if(endNode != undefined)
 		node.SetHCost(node.GetCostToTarget(endNode));	
@@ -101,8 +97,37 @@ function SetCosts(node){
 	DisplayFCost(node);
 }
 
+function SetNeighbors(node){
+	var neighborNodes = node.FindNeighborNodes(nodeGrid.grid);
+	for(let i = 0; i < neighborNodes.length; i++){
+		neighborNodes[i].SetParentNode(node);
+		nodeTypeClassName = "pending-node-cell";
+		SetNodeType(neighborNodes[i]);
+		
+		//console.log(neighborNodes[i]);
+	}
+	
+	return neighborNodes;
+}
+
+function GetSmallestFCost(nodeList){
+	let smallestFCost = nodeList[0];
+	
+	for(let i = 0; i < nodeList.length; i++){
+		if(nodeList[i].fCost < smallestFCost.fCost){
+			smallestFCost = nodeList[i];
+		}
+	}
+	
+	return smallestFCost;
+}
+
 function DisplayFCost(node){
 	if(node.fCost != undefined && isDisplayFCost == true){
+		if(node.cell.childNodes[0]){
+			node.cell.removeChild(node.cell.childNodes[0]);
+		}
+		
 		let txt = document.createTextNode(node.fCost);
 		node.cell.appendChild(txt);
 	}
