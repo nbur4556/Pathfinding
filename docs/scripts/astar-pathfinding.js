@@ -5,6 +5,21 @@ class Node{
 		this.cell = cell;
 	}
 	
+	//Distance on path so far
+	SetGCost(gCost){
+		this.gCost = gCost;
+	}
+	
+	//Shortest distance to end node without obstacles
+	SetHCost(hCost){
+		this.hCost = hCost;
+	}
+	
+	//Sum of gCost and hCost
+	SetFCost(fCost){
+		this.fCost = this.gCost + this.hCost;
+	}
+	
 	SetType(type){
 		this.type = type;
 	}
@@ -13,7 +28,7 @@ class Node{
 		this.parentNode = parentNode;
 	}
 	
-	GetDistanceToTarget(target){
+	GetCostToTarget(target){
 		var xDist = Math.abs(this.xPos - target.xPos);
 		var yDist = Math.abs(this.yPos - target.yPos);
 		var diagDist;
@@ -28,10 +43,7 @@ class Node{
 			hvDist = yDist - diagDist;
 		}
 		
-		console.log("Diag Distance: " + diagDist);
-		console.log("HV Distance: " + hvDist);
-		
-		return "distance";
+		return ((diagDist * 14) + (hvDist * 10));
 	}
 	
 	FindNeighborNodes(grid){
@@ -40,8 +52,6 @@ class Node{
 		let i = 0; 
 		for(let x = 0; x < 3; x++){
 			for(let y = 0; y < 3; y++){
-				//console.log("X: " + this.xPos + (x-1));
-				//console.log("Y: " + this.yPos + (y-1));
 				let xCoord = (this.xPos - 1) + x;
 				let yCoord = (this.yPos - 1) + y;
 				
@@ -87,11 +97,11 @@ class NodeGrid{
 			for(let y = 0; y < this.grid[x].length; y++){
 				if(this.grid[x][y].type == type){
 					return this.grid[x][y];
+				}
 			}
 		}
-	}
 	
-	return undefined;
-}
+		return undefined;
+	}
 }
 

@@ -1,6 +1,8 @@
 var nodeGrid;
 var nodeTypeClassName = ""
 
+var isDisplayFCost = false;
+
 window.onload = function(){	
 	let gridWidth = document.getElementById("grid-x");
 	let gridHeight = document.getElementById("grid-y");
@@ -60,7 +62,7 @@ function SetNodeType(node){
 	node.cell.classList.add(nodeTypeClassName);
 	node.SetType(nodeTypeClassName);
 	
-	FindDistanceToEndNode(node) //Testing Purposes
+	SetCosts(node);
 }
 
 function FindPath(grid){
@@ -72,18 +74,36 @@ function FindPath(grid){
 		return;
 	}
 	
-	neighbors = startNode.FindNeighborNodes(nodeGrid.grid);
-	for(let i = 0; i < neighbors.length; i++){
-		nodeTypeClassName = "pending-node-cell";
-		SetNodeType(neighbors[i]);
-	}
+	var pendingNodes = SetNeighbors(startNode);
 }
 
-//Testing Purposes
-function FindDistanceToEndNode(node){
+function SetNeighbors(node){
+	var neighborNodes = node.FindNeighborNodes(nodeGrid.grid);
+	for(let i = 0; i < pendingNodes.length; i++){
+		nodeTypeClassName = "pending-node-cell";
+		SetNodeType(pendingNodes[i]);
+	}
+	
+	return neighborNodes;
+}
+
+function SetCosts(node){
 	var endNode = nodeGrid.FindNodeTypeInGrid("end-node-cell");
+	var parentNode = nodeGrid.FindNodeTypeInGrid("start-node-cell");
 	
-	if(endNode == undefined){ return; }
+	if(endNode != undefined)
+		node.SetHCost(node.GetCostToTarget(endNode));	
+	if(parentNode != undefined)
+		node.SetGCost(node.GetCostToTarget(parentNode));
+	if(endNode != undefined && parentNode != undefined)
+		node.SetFCost();
 	
-	console.log(node.GetDistanceToTarget(endNode)); //Testing Purposes
+	DisplayFCost(node);
+}
+
+function DisplayFCost(node){
+	if(node.fCost != undefined && isDisplayFCost == true){
+		let txt = document.createTextNode(node.fCost);
+		node.cell.appendChild(txt);
+	}
 }
