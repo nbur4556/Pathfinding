@@ -64,34 +64,24 @@ function SetNodeType(node){
 }
 
 function FindPath(grid){
-	var startNode = FindNodeTypeInGrid(grid, "start-node-cell");
-	var endNode = FindNodeTypeInGrid(grid, "end-node-cell");
+	var startNode = nodeGrid.FindNodeTypeInGrid("start-node-cell");
+	var endNode = nodeGrid.FindNodeTypeInGrid("end-node-cell");
 	
 	if(startNode == undefined || endNode == undefined){
 		console.log("Could not find start and end node");
 		return;
 	}
 	
-	console.log(startNode.GetDistanceToTarget(endNode)); //Testing Purposes
-}
-
-function FindNodeTypeInGrid(grid, type){
-	var node;
-	
-	for(let x = 0; x < grid.length; x++){
-		for(let y = 0; y < grid[x].length; y++){
-			if(grid[x][y].type == type){
-				return grid[x][y];
-			}
-		}
+	neighbors = startNode.FindNeighborNodes(nodeGrid.grid);
+	for(let i = 0; i < neighbors.length; i++){
+		nodeTypeClassName = "pending-node-cell";
+		SetNodeType(neighbors[i]);
 	}
-	
-	return undefined;
 }
 
 //Testing Purposes
 function FindDistanceToEndNode(node){
-	var endNode = FindNodeTypeInGrid(nodeGrid.grid, "end-node-cell");
+	var endNode = nodeGrid.FindNodeTypeInGrid("end-node-cell");
 	
 	if(endNode == undefined){ return; }
 	
