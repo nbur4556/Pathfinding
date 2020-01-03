@@ -64,10 +64,15 @@ class Node{
 				let xCoord = (this.xPos - 1) + x;
 				let yCoord = (this.yPos - 1) + y;
 				
+				let isStartNode = (grid[xCoord][yCoord].type == "start-node-cell");
+				let isEndNode = (grid[xCoord][yCoord].type == "end-node-cell");
+				let isCompletedtNode = (grid[xCoord][yCoord].type == "completed-node-cell");
+				
 				if(xCoord == this.xPos && yCoord == this.yPos){
 					continue;
 				}
-				if(grid[xCoord][yCoord].type == "start-node-cell" || grid[xCoord][yCoord].type == "end-node-cell"){
+				
+				if(isStartNode == true || isEndNode == true || isCompletedtNode == true){
 					continue;
 				}
 				

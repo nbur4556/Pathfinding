@@ -21,9 +21,9 @@ window.onload = function(){
 	document.getElementById("btn-set-wall-node").addEventListener("click", function(){
 		nodeTypeClassName = "wall-node-cell";
 	});
-	document.getElementById("btn-set-pending-node").addEventListener("click", function(){
+	/*document.getElementById("btn-set-pending-node").addEventListener("click", function(){
 		nodeTypeClassName = "pending-node-cell";
-	});
+	});*/
 	
 	document.getElementById("btn-find-path").addEventListener("click", function(){
 		FindPath(nodeGrid.grid);
@@ -67,11 +67,28 @@ function FindPath(grid){
 		return;
 	}
 	
+	
+	pendingNodes = SetNeighbors(nextNode);
 	for(let i = 0; i < 10; i++){
-		pendingNodes = SetNeighbors(nextNode);
 		nextNode = GetSmallestFCost(pendingNodes);
-		console.log(nextNode);
+		
+		pendingNodes = pendingNodes.concat(SetNeighbors(nextNode));
+		pendingNodes = RemoveNodeFromList(pendingNodes, nextNode);
 	}
+}
+
+function RemoveNodeFromList(nodeList, removeNode){	
+	for(let i = 0; i < nodeList.length; i++){
+		if(nodeList[i].cell == removeNode.cell){
+			console.log("remove");
+			nodeList.splice(i, 1);
+		}
+	}
+	
+	nodeTypeClassName = "completed-node-cell";
+	SetNodeType(removeNode);
+	
+	return nodeList;
 }
 
 function SetNodeType(node){

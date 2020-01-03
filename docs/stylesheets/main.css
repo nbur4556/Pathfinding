@@ -32,3 +32,7 @@
 .pending-node-cell{
 	background-color: blue;
 }
+
+.completed-node-cell{
+	background-color: red;
+}
