@@ -1,8 +1,7 @@
+var nodeGrid;
 var nodeTypeClassName = ""
 
 window.onload = function(){	
-	var nodeGrid;
-	
 	let gridWidth = document.getElementById("grid-x");
 	let gridHeight = document.getElementById("grid-y");
 
@@ -19,6 +18,9 @@ window.onload = function(){
 	});
 	document.getElementById("btn-set-wall-node").addEventListener("click", function(){
 		nodeTypeClassName = "wall-node-cell";
+	});
+	document.getElementById("btn-set-pending-node").addEventListener("click", function(){
+		nodeTypeClassName = "pending-node-cell";
 	});
 	
 	document.getElementById("btn-find-path").addEventListener("click", function(){
@@ -40,7 +42,7 @@ function DisplayGrid(grid){
 			grid[x][y] = new Node(x, y, document.createElement("div"));
 			
 			grid[x][y].cell.classList += "node-cell";
-			grid[x][y].cell.addEventListener("click", function(){
+			grid[x][y].cell.addEventListener("click", function(){ //Grid Cell Listener
 				SetNodeType(grid[x][y]);
 			});
 			
@@ -58,7 +60,7 @@ function SetNodeType(node){
 	node.cell.classList.add(nodeTypeClassName);
 	node.SetType(nodeTypeClassName);
 	
-	console.log(node);
+	FindDistanceToEndNode(node) //Testing Purposes
 }
 
 function FindPath(grid){
@@ -85,4 +87,13 @@ function FindNodeTypeInGrid(grid, type){
 	}
 	
 	return undefined;
+}
+
+//Testing Purposes
+function FindDistanceToEndNode(node){
+	var endNode = FindNodeTypeInGrid(nodeGrid.grid, "end-node-cell");
+	
+	if(endNode == undefined){ return; }
+	
+	console.log(node.GetDistanceToTarget(endNode)); //Testing Purposes
 }

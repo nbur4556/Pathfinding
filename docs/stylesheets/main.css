@@ -22,3 +22,7 @@
 .wall-node-cell{
 	background-color: grey;
 }
+
+.pending-node-cell{
+	background-color: blue;
+}
