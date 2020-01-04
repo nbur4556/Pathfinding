@@ -64,8 +64,11 @@ class Node{
 				let xCoord = (this.xPos - 1) + x;
 				let yCoord = (this.yPos - 1) + y;
 				
+				if(xCoord < 0 || yCoord < 0 || xCoord >= grid.length || yCoord >= grid.length){
+					continue;
+				}
+				
 				let isStartNode = (grid[xCoord][yCoord].type == "start-node-cell");
-				//let isEndNode = (grid[xCoord][yCoord].type == "end-node-cell");
 				let isPendingNode = (grid[xCoord][yCoord].type == "pending-node-cell");
 				let isCompletedtNode = (grid[xCoord][yCoord].type == "completed-node-cell");
 				let isWallNode = (grid[xCoord][yCoord].type == "wall-node-cell");
