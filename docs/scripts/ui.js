@@ -21,9 +21,6 @@ window.onload = function(){
 	document.getElementById("btn-set-wall-node").addEventListener("click", function(){
 		nodeTypeClassName = "wall-node-cell";
 	});
-	/*document.getElementById("btn-set-pending-node").addEventListener("click", function(){
-		nodeTypeClassName = "pending-node-cell";
-	});*/
 	
 	document.getElementById("btn-find-path").addEventListener("click", function(){
 		FindPath(nodeGrid.grid);
@@ -69,7 +66,7 @@ function FindPath(grid){
 	
 	
 	pendingNodes = SetNeighbors(nextNode);
-	for(let i = 0; i < 10; i++){
+	for(let i = 0; i < 20; i++){
 		nextNode = GetSmallestFCost(pendingNodes);
 		
 		pendingNodes = pendingNodes.concat(SetNeighbors(nextNode));

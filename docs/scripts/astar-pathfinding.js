@@ -66,14 +66,24 @@ class Node{
 				
 				let isStartNode = (grid[xCoord][yCoord].type == "start-node-cell");
 				let isEndNode = (grid[xCoord][yCoord].type == "end-node-cell");
+				let isPendingNode = (grid[xCoord][yCoord].type == "pending-node-cell");
 				let isCompletedtNode = (grid[xCoord][yCoord].type == "completed-node-cell");
+				let isWallNode = (grid[xCoord][yCoord].type == "wall-node-cell");
 				
 				if(xCoord == this.xPos && yCoord == this.yPos){
 					continue;
 				}
 				
-				if(isStartNode == true || isEndNode == true || isCompletedtNode == true){
+				if(isStartNode == true || isEndNode == true || isCompletedtNode == true || isWallNode == true){
 					continue;
+				}
+				
+				if(isPendingNode == true){
+					let newGCost = grid[xCoord][yCoord].GetCostToTarget(this) + this.gCost;
+					if((newGCost + grid[xCoord][yCoord].hCost) > grid[xCoord][yCoord].fCost){
+						console.log("Do Not Replace");
+						continue;
+					}
 				}
 				
 				neighborNodes[i] = grid[xCoord][yCoord];
