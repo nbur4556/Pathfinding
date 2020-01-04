@@ -1,13 +1,15 @@
 var nodeGrid;
 var nodeTypeClassName = ""
+var isPathFinished = false;
 
-var isDisplayFCost = true;
+var isDisplayFCost = false; //Testing Purposes
 
 window.onload = function(){	
 	let gridWidth = document.getElementById("grid-x");
 	let gridHeight = document.getElementById("grid-y");
 
 	document.getElementById("btn-generate").addEventListener("click", function(){
+		isPathFinished = false;
 		nodeGrid = new NodeGrid(gridWidth.value, gridHeight.value);
 		nodeGrid.SetGrid(DisplayGrid(nodeGrid.grid));
 	});
@@ -66,18 +68,30 @@ function FindPath(grid){
 	
 	
 	pendingNodes = SetNeighbors(nextNode);
-	for(let i = 0; i < 20; i++){
+	while(isPathFinished == false){
 		nextNode = GetSmallestFCost(pendingNodes);
 		
 		pendingNodes = pendingNodes.concat(SetNeighbors(nextNode));
-		pendingNodes = RemoveNodeFromList(pendingNodes, nextNode);
+		if(isPathFinished == false){
+			pendingNodes = RemoveNodeFromList(pendingNodes, nextNode);
+		}
+	}
+}
+
+function FinishPath(endNode){
+	isPathFinished = true;
+	
+	nodeTypeClassName = "path-node-cell";
+	
+	while(endNode != undefined){
+		SetNodeType(endNode);
+		endNode = endNode.parentNode;
 	}
 }
 
 function RemoveNodeFromList(nodeList, removeNode){	
 	for(let i = 0; i < nodeList.length; i++){
 		if(nodeList[i].cell == removeNode.cell){
-			console.log("remove");
 			nodeList.splice(i, 1);
 		}
 	}
@@ -115,6 +129,12 @@ function SetNeighbors(node){
 	var neighborNodes = node.FindNeighborNodes(nodeGrid.grid);
 	for(let i = 0; i < neighborNodes.length; i++){
 		neighborNodes[i].SetParentNode(node);
+		
+		if(neighborNodes[i].type == "end-node-cell"){
+			FinishPath(neighborNodes[i]);
+			break;
+		}
+		
 		nodeTypeClassName = "pending-node-cell";
 		SetNodeType(neighborNodes[i]);
 		
@@ -128,7 +148,7 @@ function GetSmallestFCost(nodeList){
 	let smallestFCost = nodeList[0];
 	
 	for(let i = 0; i < nodeList.length; i++){
-		if(nodeList[i].fCost < smallestFCost.fCost){
+		if(nodeList[i].fCost <= smallestFCost.fCost){
 			smallestFCost = nodeList[i];
 		}
 	}
